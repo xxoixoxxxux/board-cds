@@ -1,6 +1,6 @@
-package idusw.springboot.boradthymleaf.service;
+package idusw.springboot.boardcds.service;
 
-import idusw.springboot.boradthymleaf.domain.Memo;
+import idusw.springboot.boardcds.domain.Memo;
 
 import java.util.List;
 
