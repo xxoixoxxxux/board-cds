@@ -1,6 +1,9 @@
 package idusw.springboot.boardcds.service;
 
+import idusw.springboot.boardcds.domain.Member;
 import idusw.springboot.boardcds.domain.Memo;
+import idusw.springboot.boardcds.domain.PageResultDTO;
+import idusw.springboot.boardcds.entity.MemberEntity;
 
 import java.util.List;
 
@@ -10,6 +13,4 @@ public interface MemoService {
     List<Memo> readList();
     int update(Memo m);
     int delete(Memo m);
-
-    List<Memo> initialize();
 }

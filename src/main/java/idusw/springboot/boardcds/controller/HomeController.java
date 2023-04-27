@@ -1,10 +1,7 @@
 package idusw.springboot.boardcds.controller;
 
-import idusw.springboot.boardcds.service.MemoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
@@ -17,6 +14,6 @@ public class HomeController {
     // localhost:port로 요청을 하면 getAdmin() 메소드를 호출하여 처리하고, /admin/index view에게 전달
     @GetMapping("/")
     public String getAdim() {
-        return "/admin/index";
+        return "/main/index";
     }
 }

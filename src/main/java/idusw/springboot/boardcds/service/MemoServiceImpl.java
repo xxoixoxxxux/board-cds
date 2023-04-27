@@ -56,7 +56,7 @@ public class MemoServiceImpl implements MemoService {
         return 0;
     }
 
-    @Override
+    // @Override
     public List<Memo> initialize() {
         // 테이블 초기화 코드
         IntStream.rangeClosed(1, 10).forEach(i -> {

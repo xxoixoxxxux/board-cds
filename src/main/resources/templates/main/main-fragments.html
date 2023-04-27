@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -18,11 +18,11 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../admin/index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Cds Admin <sup>4</sup></div>
+            <div class="sidebar-brand-text mx-3">CdsBoard <sup>4</sup></div>
         </a>
 
         <!-- Divider -->
@@ -30,7 +30,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="../admin/index.html">
+            <a class="nav-link" href="index.html">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
@@ -68,10 +68,10 @@
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="../utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="../utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="../utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="../utilities-other.html">Other</a>
+                    <a class="collapse-item" href="../misc/utilities-color.html">Colors</a>
+                    <a class="collapse-item" href="../misc/utilities-border.html">Borders</a>
+                    <a class="collapse-item" href="../misc/utilities-animation.html">Animations</a>
+                    <a class="collapse-item" href="../misc/utilities-other.html">Other</a>
                 </div>
             </div>
         </li>
@@ -93,20 +93,20 @@
             <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="../members/login.html">Login</a>
-                    <a class="collapse-item" href="../members/register.html">Register</a>
-                    <a class="collapse-item" href="../members/forgot-password.html">Forgot Password</a>
+                    <a class="collapse-item" href="/members/login">Login</a>
+                    <a class="collapse-item" href="/members/register">Register</a>
+                    <a class="collapse-item" href="/members/forgot-password">Forgot Password</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item active" href="../404.html">404 Page</a>
-                    <a class="collapse-item" href="../blank.html">Blank Page</a>
+                    <a class="collapse-item active" href="../errors/404.html">404 Page</a>
+                    <a class="collapse-item" href="../misc/blank.html">Blank Page</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="../charts.html">
+            <a class="nav-link" href="../misc/charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Charts</span></a>
         </li>
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </form>
-
+        <div th:if="${session.mb != null}">
         <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto">
 
@@ -295,16 +295,14 @@
             </li>
 
             <div class="topbar-divider d-none d-sm-block"></div>
-
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                    <span th:text="${session.mb.name}" class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                     <img class="img-profile rounded-circle"
-                         src="/img/undraw_profile.svg">
-                </a>
-                <!-- Dropdown - User Information -->
+                         src="/img/undraw_profile.svg"></a>
+                <!--Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                      aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">
@@ -326,9 +324,16 @@
                     </a>
                 </div>
             </li>
-
         </ul>
-
+        </div>
+        <div th:unless="${session.mb != null}">
+            <a href="/members/login" th:href="@{'/members/login'}">
+                <i>Login</i>
+            </a>
+            <a href="/members/register" th:href="@{'/members/register'}">
+                <i>Register</i>
+            </a>
+        </div>
     </nav>
 </div>
 <div th:fragments="footer">

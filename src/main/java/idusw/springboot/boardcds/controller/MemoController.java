@@ -27,7 +27,7 @@ public class MemoController {
     @GetMapping("/init")
     public String initialize(Model model) {
         List<Memo> result = new ArrayList<>();
-        result = memoService.initialize();
+        // result = memoService.initialize();
         model.addAttribute("attr", result);
         return "/memo/list";
     }
