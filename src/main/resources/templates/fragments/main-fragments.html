@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -22,7 +22,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Cds Admin <sup>4</sup></div>
+            <div class="sidebar-brand-text mx-3">CdsBoard <sup>4</sup></div>
         </a>
 
         <!-- Divider -->
@@ -93,9 +93,9 @@
             <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="../members/login.html">Login</a>
-                    <a class="collapse-item" href="../members/register.html">Register</a>
-                    <a class="collapse-item" href="../members/forgot-password.html">Forgot Password</a>
+                    <a class="collapse-item" href="/members/login">Login</a>
+                    <a class="collapse-item" href="/members/register">Register</a>
+                    <a class="collapse-item" href="/members/forgot-password">Forgot Password</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Other Pages:</h6>
                     <a class="collapse-item active" href="../404.html">404 Page</a>
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </form>
-
+        <div th:if="${session.mb != null}">
         <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto">
 
@@ -295,16 +295,14 @@
             </li>
 
             <div class="topbar-divider d-none d-sm-block"></div>
-
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                    <span th:text="${session.mb.name}" class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                     <img class="img-profile rounded-circle"
-                         src="/img/undraw_profile.svg">
-                </a>
-                <!-- Dropdown - User Information -->
+                         src="/img/undraw_profile.svg"></a>
+                <!--Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                      aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">
@@ -326,9 +324,16 @@
                     </a>
                 </div>
             </li>
-
         </ul>
-
+        </div>
+        <div th:unless="${session.mb != null}">
+            <a href="/members/login" th:href="@{'/members/login'}">
+                <i>Login</i>
+            </a>
+            <a href="/members/register" th:href="@{'/members/register'}">
+                <i>Register</i>
+            </a>
+        </div>
     </nav>
 </div>
 <div th:fragments="footer">

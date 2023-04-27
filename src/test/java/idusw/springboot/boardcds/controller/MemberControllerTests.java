@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-public class MemberControllerTests {
+public class MemberControllerTests { // Unit Test : JUnit - Test Framework
     @Autowired
     MemberService memberService;
 
