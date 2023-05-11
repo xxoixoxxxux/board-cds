@@ -43,7 +43,13 @@ public class MemberController {
         session.invalidate();
         return "redirect:/";
     }
-    @GetMapping(value = {"", "/"})
+    @GetMapping(value = {"","/pn/{size}"})
+    public String listMemberpagination(@PathVariable("pn") int pn, @PathVariable("size") int size, Model model) {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(size).build();
+        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
+        return "/members/list";
+    }
+/*    @GetMapping(value = {"", "/"})
     public String listMember(Model model) {
         List<Member> result = null;
         if((result = memberService.readList()) != null) {
@@ -52,7 +58,7 @@ public class MemberController {
         }
         else
             return "/errors/404";
-    }
+    }*/
     @GetMapping(value = {"/pn/{pn}"})
     public String listMemberByPageNumber(@PathVariable("pn") int pn, Model model) {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(10).build();

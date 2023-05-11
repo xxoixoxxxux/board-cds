@@ -52,6 +52,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                     </div>
                     <div class="card-body">
+
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -75,13 +76,13 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="member : ${list}">
+                                <tr th:each="member : ${result.dtoList}">
                                     <td>[[$member.seq}]]</td>
                                     <td>[[$member.email}]]</td>
                                     <td>[[$member.name}]]</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
+                                    <td>[[$member.pw}]]</td>
+                                    <td>[[$member.regDate}]]</td>
+                                    <td>[[$member.modDate}]]</td>
                                 </tr>
                                 </tbody>
                             </table>

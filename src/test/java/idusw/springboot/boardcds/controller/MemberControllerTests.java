@@ -50,7 +50,7 @@ public class MemberControllerTests {
     @Test
     void initializeMember() {
         // Integer 데이터 흐름, Lambda 식 - 함수형 언어의 특징을 활용
-        IntStream.rangeClosed(1, 33).forEach(i -> {
+        IntStream.rangeClosed(1, 101).forEach(i -> {
             MemberEntity member = MemberEntity.builder()
                     .seq(Long.valueOf(i))
                     .email("a" + i + "@induk.ac.kr")
@@ -76,10 +76,21 @@ public class MemberControllerTests {
 
     @Test
     public void testPageList() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(2).size(5).build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(5).size(10).build();
         PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
-        for (Member member : resultDTO.getDtoList())
-            System.out.println(member);
+        // print records in page
+        /* for (Member member : resultDTO.getDtoList())
+            System.out.println(member); */
+        /**
+         * boolean prev은 lombok으로 generation할 때 getter는 isPrev(), setter는 setPrev()
+         * int totalPage 인 경우 getter는 getTotalPage(), setter setTotalPage()
+         *
+         * @Data == @Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode.
+         */
+        System.out.println("Prev : " + resultDTO.isPrev()); // perPagination = 4인 경우, 1 - 4, 5 - 8, 9 - 12
+        System.out.println("Next : " + resultDTO.isNext());
+        System.out.println("Total Page : " + resultDTO.getTotalPage());
+        resultDTO.getPageList().forEach(i -> System.out.println(i));
     }
 
 }
