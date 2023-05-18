@@ -43,11 +43,30 @@ public class MemberController {
         session.invalidate();
         return "redirect:/";
     }
-    @GetMapping(value = {"","/pn/{size}"})
+    /*@GetMapping(value = {"","/pn/{size}"})
     public String listMemberpagination(@PathVariable("pn") int pn, @PathVariable("size") int size, Model model) {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(size).build();
+    */
+    @GetMapping(value = {"", "/"} ) // ?page&=perPage=
+    public String listMemberPagination(@RequestParam(value="page", required = false, defaultValue = "1") int page,
+                                       @RequestParam(value="perPage", required = false, defaultValue = "10") int perPage,
+                                       @RequestParam(value="perPagination", required = false, defaultValue = "5") int perPagination,
+                                       @RequestParam(value="type", required = false, defaultValue = "e") String type,
+                                       @RequestParam(value ="keyword", required = false, defaultValue = "@") String keyword,
+                                       Model model) {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(page)
+                .perPage(perPage)
+                .perPagination(perPagination)
+                .type(type)
+                .keyword(keyword)
+                .build();
         PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
-        return "/members/list";
+        if(resultDTO != null) {
+            model.addAttribute("result", resultDTO); // page number list
+            return "/members/list"; // view : template engine - thymeleaf .html
+        }
+        else
+            return "/errors/404";
     }
 /*    @GetMapping(value = {"", "/"})
     public String listMember(Model model) {
@@ -59,18 +78,6 @@ public class MemberController {
         else
             return "/errors/404";
     }*/
-    @GetMapping(value = {"/pn/{pn}"})
-    public String listMemberByPageNumber(@PathVariable("pn") int pn, Model model) {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(10).build();
-        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
-        List<Member> result = resultDTO.getDtoList();
-        if(result != null) {
-            model.addAttribute("list", result);
-            return "/members/list";
-        }
-        else
-            return "/errors/404";
-    }
 
     @GetMapping("/register-form")
     public String getRegisterForm(Model model) { // form 요청 -> view (template engine)

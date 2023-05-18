@@ -52,44 +52,91 @@
                         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                     </div>
                     <div class="card-body">
-
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <tr th:each="member : ${result.dtoList}">
-                                    <td>[[$member.seq}]]</td>
-                                    <td>[[$member.email}]]</td>
-                                    <td>[[$member.name}]]</td>
-                                    <td>[[$member.pw}]]</td>
-                                    <td>[[$member.regDate}]]</td>
-                                    <td>[[$member.modDate}]]</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <form th:action="@{'/members'}" th:method="get">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="dataTable_length">
+                                            <label>검색 요건
+                                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                                <option value="e">email</option>
+                                                <option value="n">name</option>
+                                                <option value="en">email+name</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="dataTable_filter" class="dataTables_filter">
+                                            <label>Search:
+                                                <input type="keyword" class="form-control form-control-sm" placeholder="" aria-controls="dataTable">
+                                            </label>
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="das far search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>번호</th>
+                                                <th>이메일</th>
+                                                <th>이름</th>
+                                                <th>암호</th>
+                                                <th>등록일</th>
+                                                <th>수정일</th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th>번호</th>
+                                                <th>이메일</th>
+                                                <th>이름</th>
+                                                <th>암호</th>
+                                                <th>등록일</th>
+                                                <th>수정일</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody>
+                                            <tr th:each="member : ${result.dtoList}">
+                                                <td>[[${member.seq}]]</td>
+                                                <td>[[${member.email}]]</td>
+                                                <td>[[${member.name}]]</td>
+                                                <td>[[${member.pw}]]</td>
+                                                <td>[[${member.regDate}]]</td>
+                                                <td>[[${member.modDate}]]</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div></div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+<!--                                            showing <span th:text="${result.startRow}"></span> to <span th:text="${result.endRow}"></span> of [[$result.totalRows]] entries-->
+                                        </div></div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                            <ul class="pagination">
+                                                <li th:if="${result.prev}" th:class="'paginate_button page-item previous ' + ${result.prev?'':'disabled'}" id="dataTable_previous">
+                                                    <a href="#" th:href="@{/members(page=${result.start - 1}, perPage=${result.perPage})}" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                                                <li th:class="'paginate_button page-item ' + ${result.curPage == page?'active':''}" th:each="page : ${result.pageList}">
+                                                    <a href="#" th:href="@{/members(page=${page}, perPage=${result.perPage})}" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">[[${page}]]</a></li>
+                                                <li th:if="${result.next}" th:class="'paginate_button page-item next ' + ${result.next?'':'disabled'} " id="dataTable_next">
+                                                    <a href="#" th:href="@{/members(page=${result.end + 1}, perPage=${result.perPage})}" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
 
