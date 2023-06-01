@@ -29,6 +29,7 @@ public class PageResultDTO<DTO, EN> {
     private List<Integer> pageList; // 페이지 번호 목록
 
     public PageResultDTO(Page<EN> result, Function<EN, DTO> fn, int perPagination) {
+
         totalRows = result.getTotalElements();
         dtoList = result.stream().map(fn).collect(Collectors.toList()); // get records
         totalPage = result.getTotalPages();
