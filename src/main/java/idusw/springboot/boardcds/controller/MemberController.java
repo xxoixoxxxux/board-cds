@@ -22,6 +22,7 @@ public class MemberController {
         this.memberService = memberService;
     }
     HttpSession session = null;
+
     @GetMapping("/login-form")
     public String getLoginform(Model model) {
         model.addAttribute("member", Member.builder().build()); // email / pw 전달을 위한 객체

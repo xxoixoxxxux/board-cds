@@ -24,9 +24,9 @@ public class BoardControllerTest {
     @Test
     void registerBoard() {
         Board board = Board.builder()
-                .bno(1L)
+                .bno(2L)
                 .title("title")
-                .content("content")
+                .content("board register")
                 .writerSeq(1L)
                 .writerEmail("201712010@induk.ac.kr")
                 .writerName("d")

@@ -88,8 +88,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member login(Member m) { // 인터페이스 선언된 메소드 중 구현하지 않는 메소드를 구현해야 함.
-        Member result = null;
         MemberEntity entity = memberRepository.getByEmailPw(m.getEmail(), m.getPw());
+        System.out.println("login :" + entity);
+        Member result = null;
         if(entity != null) {
             result = new Member();
             result.setSeq(entity.getSeq());

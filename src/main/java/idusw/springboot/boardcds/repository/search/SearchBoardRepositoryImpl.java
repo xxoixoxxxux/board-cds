@@ -89,7 +89,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
             tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
         });
 
-        tuple.groupBy(boardEntity);
+        tuple.groupBy(boardEntity, memberEntity);
 
         // page 처리
         tuple.offset(pageable.getOffset()); // 시작 레코드 vs 현재 페이지를 사용하지는 않음

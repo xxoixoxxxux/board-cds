@@ -11,7 +11,7 @@
     <title>SB Admin 2 - Login</title>
 
     <!-- Custom fonts for this template-->
-    <div th:replace="~{/main/main-fragments :: head}"></div>
+    <div th:replace="~{/main/main-fragments :: header}"></div>
 
 </head>
 
@@ -36,7 +36,7 @@
                                     </div>
                                     <form class="user" th:action="@{'/members/login'}" th:object="${member}" th:method="post">
                                         <div class="form-group">
-                                            <input type="email" th:field="*{email}" class="form-control form-control-user"
+                                            <input type="email" name="email" th:field="*{email}" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Email Address...">
                                         </div>
@@ -53,19 +53,19 @@
                                         </div>
                                         <input type="submit" value="Login" class="btn btn-primary btn-user btn-block">
                                         <hr>
-                                        <a href="/admin/index.html" class="btn btn-google btn-user btn-block">
+                                        <a href="/main/index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
                                         </a>
-                                        <a href="/admin/index.html" class="btn btn-facebook btn-user btn-block">
+                                        <a href="/main/index.html" class="btn btn-facebook btn-user btn-block">
                                             <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                         </a>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="/members/forgot-password">Forgot Password?</a>
+                                        <a class="small" href="/members/forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="/members/register">Create an Account!</a>
+                                        <a class="small" href="/members/register.html">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>

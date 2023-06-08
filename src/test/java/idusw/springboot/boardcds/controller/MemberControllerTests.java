@@ -53,7 +53,7 @@ public class MemberControllerTests {
         IntStream.rangeClosed(1, 101).forEach(i -> {
             MemberEntity member = MemberEntity.builder()
                     .seq(Long.valueOf(i))
-                    .email("a" + i + "@induk.ac.kr")
+                    .email("a" + i + "@induk.ac.kr") // 200412045 -> 04045
                     .pw("pw" + i)
                     .name("name" + i)
                     .build();
@@ -76,21 +76,27 @@ public class MemberControllerTests {
 
     @Test
     public void testPageList() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(5).perPage(10).build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(13) // 선택한 page
+                .perPage(5) // record 수
+                .perPagination(5) // 페이지 번호 표시 갯수
+                .build();
         PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
         // print records in page
-        /* for (Member member : resultDTO.getDtoList())
-            System.out.println(member); */
+        for(Member member : resultDTO.getDtoList())
+            System.out.println(member);
         /**
-         * boolean prev은 lombok으로 generation할 때 getter는 isPrev(), setter는 setPrev()
+         * boolean prev은 lombok으로 generation할 때  getter는 isPrev(), setter 는 setPrev()
          * int totalPage 인 경우 getter는 getTotalPage(), setter setTotalPage()
          *
          * @Data == @Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode.
          */
-        System.out.println("Prev : " + resultDTO.isPrev()); // perPagination = 4인 경우, 1 - 4, 5 - 8, 9 - 12
+        System.out.println("Prev : " + resultDTO.isPrev()); //  PerPagination = 4인경, 1 - 4, 5 - 8, 9 - 12
         System.out.println("Next : " + resultDTO.isNext());
         System.out.println("Total Page : " + resultDTO.getTotalPage());
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
+        // Java Lambda : -> , 함수형 인터페이스, Method Chaining 방식
+        // resultDTO.getPageList().forEach(i -> System.out.println(i));
+        for(Integer i : resultDTO.getPageList())
+            System.out.format("%3d", i);
     }
-
 }

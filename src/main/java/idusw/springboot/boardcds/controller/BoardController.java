@@ -3,6 +3,7 @@ package idusw.springboot.boardcds.controller;
 import idusw.springboot.boardcds.domain.Board;
 import idusw.springboot.boardcds.domain.Member;
 import idusw.springboot.boardcds.domain.PageRequestDTO;
+import idusw.springboot.boardcds.domain.PageResultDTO;
 import idusw.springboot.boardcds.service.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -50,8 +51,9 @@ public class BoardController {
     }
 
     @GetMapping("")
-    public String getBoards(PageRequestDTO pageRequestDTO, Model model) { // 중간 본 수정
-        //model.addAttribute("list", boardService.findBoardAll(pageRequestDTO));
+    public String getBoards(@ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO, Model model) { // 중간 본 수정
+        PageResultDTO<Board, Object[]> pageResultDTO = boardService.findBoardAll(pageRequestDTO);
+        model.addAttribute("list", pageResultDTO);
         return "/boards/list";
     }
 
@@ -60,8 +62,8 @@ public class BoardController {
         // Long bno 값을 사용하는 방식을 Board 객체에 bno를 설정하여 사용하는 방식으로 변경
         Board board = boardService.findBoardById(Board.builder().bno(bno).build());
         boardService.updateBoard(board);
-        model.addAttribute("dto", boardService.findBoardById(board));
-        return "detail";
+        model.addAttribute("board", board);
+        return "/boards/detail";
     }
 
     @GetMapping("/{bno}/up-form")

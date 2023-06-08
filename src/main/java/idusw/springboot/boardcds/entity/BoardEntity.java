@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity // 엔티티 클래스임으로 나타내는 애노테이션
-@Table(name = "member_a201712010")
+@Table(name = "board_a201712010")
 
 @ToString(exclude = "writer")   // lombok 라이브러리 사용
 @Getter
@@ -17,8 +17,8 @@ public class BoardEntity extends BaseEntity {
     // Entity : Service -> Repository -> Service 데이터 객제, Database 관점
     // Repository : Persistence Data 처리
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_a201712010_seq_gen")
-    @SequenceGenerator(sequenceName = "member_a201712010_seq", name = "member_board_seq_gen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_a201712010_seq_gen")
+    @SequenceGenerator(sequenceName = "board_a201712010_seq", name = "board_a201712010_seq_gen", initialValue = 1, allocationSize = 1)
     // Oracle : GenerationType.SEQUENCE, Mysql/MariaDB : GenerationType.IDENTITY, auto increment
     private Long bno;
 
