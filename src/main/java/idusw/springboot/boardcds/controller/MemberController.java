@@ -1,133 +1,79 @@
 package idusw.springboot.boardcds.controller;
 
 import idusw.springboot.boardcds.domain.Member;
-import idusw.springboot.boardcds.domain.PageRequestDTO;
-import idusw.springboot.boardcds.domain.PageResultDTO;
-import idusw.springboot.boardcds.entity.MemberEntity;
 import idusw.springboot.boardcds.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/members")
 public class MemberController {
-    // Constructor DI(Dependency Injection)
+    // 생성자 주입
     MemberService memberService;
-    public MemberController(MemberService memberService) { // Spring Framework이 주입(하도록 요청함)
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
-    HttpSession session = null;
-
-    @GetMapping("/login-form")
-    public String getLoginform(Model model) {
-        model.addAttribute("member", Member.builder().build()); // email / pw 전달을 위한 객체
-        return "/members/login"; // view : template engine - thymeleaf .html
+    private HttpSession session;
+    @GetMapping("/login")
+    public String getLoginForm() {
+        //memberService.toString();
+        return "/members/login";
     }
     @PostMapping("/login")
-    public String loginMember(@ModelAttribute("member") Member member, HttpServletRequest request) { // 로그인 처리 -> service -> repository -> service -> controller
+    public String loginMember(@ModelAttribute("member") Member m, Model model, HttpServletRequest request) {
+        // @ModelAttribute : 요청으로 전달된 객체 (폼에서 입력한 정보를 갖는), email, pw
         Member result = null;
-        if((result = memberService.login(member)) != null ) { // 정상적으로 레코드의 변화가 발생하는 경우 영향받는 레코드 수를 반환
+        if((result = memberService.login(m)) != null) {
             session = request.getSession();
             session.setAttribute("mb", result);
-            return "redirect:/";
+            return "redirect:/"; // 재지정(redirection)
         }
         else
-            return "/errors/404";
+            return "redirect:/members/register";
     }
     @GetMapping("/logout")
     public String logoutMember() {
-        session.invalidate();
+        session.invalidate();   // session 객체 무효화, 저장된 속성도 사라짐
         return "redirect:/";
     }
-    /*@GetMapping(value = {"","/pn/{size}"})
-    public String listMemberpagination(@PathVariable("pn") int pn, @PathVariable("size") int size, Model model) {
-    */
-    @GetMapping(value = {"", "/"} ) // ?page&=perPage=
-    public String listMemberPagination(@RequestParam(value="page", required = false, defaultValue = "1") int page,
-                                       @RequestParam(value="perPage", required = false, defaultValue = "10") int perPage,
-                                       @RequestParam(value="perPagination", required = false, defaultValue = "5") int perPagination,
-                                       @RequestParam(value="type", required = false, defaultValue = "e") String type,
-                                       @RequestParam(value ="keyword", required = false, defaultValue = "@") String keyword,
-                                       Model model) {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .page(page)
-                .perPage(perPage)
-                .perPagination(perPagination)
-                .type(type)
-                .keyword(keyword)
-                .build();
-        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
-        if(resultDTO != null) {
-            model.addAttribute("result", resultDTO); // page number list
-            return "/members/list"; // view : template engine - thymeleaf .html
-        }
-        else
-            return "/errors/404";
-    }
-/*    @GetMapping(value = {"", "/"})
-    public String listMember(Model model) {
-        List<Member> result = null;
-        if((result = memberService.readList()) != null) {
-            model.addAttribute("list", result);
+    @GetMapping("/")
+    public String getMemberList(Model model) {
+        // 1. 매개변수를 받아 기본 작업하고, 2. 서비스에게 요청을 전달 - readList() 가 처리 후 반환, 3. 결과를 view에 전달
+        List<Member> memberList = new ArrayList<>(); // 결과를 받을 객체
+        if((memberList = memberService.readList()) != null) {
+            model.addAttribute("list", memberList);
             return "/members/list";
+        } else {
+            model.addAttribute("error message", "목록 조회에 실패. 권한 확인");
+            return "/error/message";
         }
-        else
-            return "/errors/404";
-    }*/
-
-    @GetMapping("/reg-form")
-    public String getRegisterForm(Model model) { // form 요청 -> view (template engine)
+    }
+    @GetMapping("/register")
+    public String getRegisterForm(Model model) {
+        // Member 형의 객체를 생성하고,
         model.addAttribute("member", Member.builder().build());
-        return "/members/register";
+        return "/members/register"; // register.html, view resolving
     }
-    @PostMapping("/")
-    public String createMember(@ModelAttribute("member") Member member, Model model) { // 등록 처리 -> service -> repository -> service -> controller
-        if(memberService.create(member) > 0 ) // 정상적으로 레코드의 변화가 발생하는 경우 영향받는 레코드 수를 반환
-            return "redirect:/";
+    @PostMapping("/register")
+    public String registerMember(@ModelAttribute("member") Member m, Model model) {
+        if(memberService.create(m) > 0 )
+            return "redirect:/members/login"; // 홈으로 재지정함 : 컨트롤러에게 재지정
         else
-            return "/errors/404";
+            return "redirect:/members/register";
     }
-    @GetMapping("/{seq}")
-    public String getMember(@PathVariable("seq") Long seq, Model model) {
-        Member result = new Member(); // 반환
-        Member m = new Member(); // 매개변수로 전달
-        m.setSeq(seq);
-        result = memberService.read(m);
-        // MemberService가 MemberRepository에게 전달
-        // MemberRepository는 JpaRepository 인터페이스의 구현체를 활용할 수 있음
-        model.addAttribute("member", result);
-        return "/members/detail";
-    }
-
-    @PutMapping("/{seq}")
-    public String updateMember(@ModelAttribute("member") Member member, Model model) { // 수정 처리 -> service -> repository -> service -> controller
-        if(memberService.update(member) > 0 ) {
-            session.setAttribute("mb", member);
-            return "redirect:/";
-        }
-        else
-            return "/errors/404";
-    }
-    @DeleteMapping("/{seq}")
-    public String deleteMember(@ModelAttribute("member") Member member) { // 삭제 처리 -> service -> repository -> service -> controller
-        if(memberService.delete(member) > 0) {
-            session.invalidate();
-            return "redirect:/";
-        }
-        else
-            return "/errors/404";
-    }
-    @GetMapping("/forgot") // 조회 read
-    public String getForgotform() { // 분실 비밀번호 처리 요청 -> view
-        return "/members/forgot-password"; // view : template engine - thymeleaf .html
-    }
-    @PostMapping("/forgot") // create vs  update -> @PutMapping, delete -> @DeleteMapping
-    public String forgotMemberPassword() { // 비밀번호(갱신) -> service -> repository -> service -> controller
-        return "redirect:/"; // 루트로 이동
+    // @RequestMapping(Value="/forgot
+    @GetMapping("/forgot")
+    public String getForgotForm() {
+        //memberService.toString();
+        return "/members/forgot-password";
     }
 }
