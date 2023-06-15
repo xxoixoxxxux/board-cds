@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity // 엔티티 클래스임으로 나타내는 애노테이션
-@Table(name = "a201712010_reply")
+@Table(name = "reply_a201712010")
 
 @ToString(exclude = "board")
 @Getter
@@ -14,8 +14,8 @@ import lombok.*;
 
 public class ReplyEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "a201712010_reply_seq_gen")
-    @SequenceGenerator(sequenceName = "a201712010_reply_seq", name = "a201712010_reply_seq_gen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reply_a201712010_seq_gen")
+    @SequenceGenerator(sequenceName = "reply_a201712010_seq", name = "reply_a201712010_seq_gen", initialValue = 1, allocationSize = 1)
     // Oracle : GenerationType.SEQUENCE, Mysql/MariaDB : GenerationType.IDENTITY, auto_increment
     private Long rno;
 

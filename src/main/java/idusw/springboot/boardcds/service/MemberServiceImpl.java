@@ -98,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
             result.setName(entity.getName());
             result.setPw(entity.getPw());
         }
-        return null;
+        return result;
     }
     @Override
     public PageResultDTO<Member, MemberEntity> getList(PageRequestDTO requestDTO) {;
